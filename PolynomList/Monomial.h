@@ -2,25 +2,45 @@
 Student:Tal Haim
 ID 206220451
 */
-#include <iostream>
 #pragma once
+#include <iostream>
+using namespace std;
 class Polynomial;
 class Monomial
 {
-
-public:
-	static int monomialNumber;
-	Monomial(double coefficient = 1, const int degree = 0);
-	~Monomial();
-	void print() const;
-	bool add(const Monomial &other);
-	static int getNumberOfMonomials();
-	double getCoefficient() const { return coefficient; }
-	void setCoefficient(double value) { coefficient = value; }
-	unsigned int getDegree() const { return degree; }
 	friend Polynomial;
+	friend ostream & operator<<(ostream &, const Polynomial &);
+	friend ostream & operator<<(ostream &, const Monomial &);
+	friend istream & operator>>(istream & , Monomial &);
+	
+public:
+	Monomial(double coefficient = 1, int degree = 0);
+	Monomial(const Monomial &toCopy);
+	~Monomial();
+	double getCoefficient() const { return coefficient; }
+	int getDegree() const { return this->degree; }
+	static int getNumberOfMonomials();
+	Monomial* ptrNext() { return this->next; }
+	double& getCoefficentReference() { return coefficient; };
+
+	////operator overloading section////
+	const Monomial& operator=(const Monomial&);
+	Monomial operator+(const Monomial&) const;
+	Monomial operator-(const Monomial&) const;
+	Monomial operator*(const Monomial&) const;
+	const Monomial& operator+=(const Monomial&);
+	const Monomial& operator-=(const Monomial&);
+	const Monomial& operator*=(const Monomial&);
+	const Monomial& operator-();
+	bool operator==(const Monomial&);
+	bool operator!=(const Monomial&);
+	double operator()(const double);
+
 private:
 	double coefficient;
-	const int degree;
+	int degree;
+	static int monomialNumber;
+	void setCoefficient(double value) { coefficient = value; }
+	void setDegree(int setDegree) { degree = setDegree; }
 	Monomial* next=NULL;
 };
